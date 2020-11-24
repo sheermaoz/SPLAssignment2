@@ -1,10 +1,6 @@
 package bgu.spl.mics.application.services;
 
-
 import bgu.spl.mics.MicroService;
-import bgu.spl.mics.application.messages.BombDestroyerEvent;
-import bgu.spl.mics.application.messages.TerminateBroadcast;
-import bgu.spl.mics.application.passiveObjects.Diary;
 
 /**
  * LandoMicroservice
