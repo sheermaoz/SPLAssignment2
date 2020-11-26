@@ -29,4 +29,12 @@ public class FutureTest {
         assertTrue(future.isDone());
         assertTrue(str.equals(future.get()));
     }
+
+    @Test
+    public void testGet() {
+        assertTrue((future.get(2, TimeUnit.SECONDS)) == null);
+        String str = "someResult";
+        future.resolve(str);
+        assertFalse((future.get(2, TimeUnit.SECONDS)) == null);
+    }
 }

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.*;
 
-import bgu.spl.mics.application.messages.AttackEvent;
+import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.services.*;
 
 public class MessageBusImplTest extends MessageBusImpl {
@@ -23,6 +23,7 @@ public class MessageBusImplTest extends MessageBusImpl {
     
     @Test
     public void testSendEvent()
+    //Tests both sendEvent and subscribeEvent
     {
 
         MicroService m = new SampleMicroservice();
@@ -38,7 +39,6 @@ public class MessageBusImplTest extends MessageBusImpl {
         }
         catch (InterruptedException ex)
         {
-            System.out.println("Got Exception: " + ex);
             fail();
         }
 
@@ -57,5 +57,25 @@ public class MessageBusImplTest extends MessageBusImpl {
         assertTrue(future.isDone());
         assertTrue(future.get());
     }
+
+    @Test
+        //Tests both subscribeBroadcast and sendBroadcast
+        void testSubscribeBroadcast () {
+            MicroService m = new SampleMicroservice();
+            bus.register(m);
+            ExampleBroadcast brod = new ExampleBroadcast("hello");
+
+            bus.subscribeBroadcast(ExampleBroadcast.class,m);
+            bus.sendBroadcast(brod);
+
+            try
+            {
+                Message msg = bus.awaitMessage(m);
+                assertEquals(msg , brod);
+            }
+            catch (InterruptedException ex){
+                fail();
+            }
+        }
     
 }
