@@ -1,5 +1,7 @@
 package bgu.spl.mics;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -19,17 +21,18 @@ public class MessageBusImplTest extends MessageBusImpl {
     }
     
     @Test
-    public void testSubscribe()
+    public void testSendEvent()
     {
 
         MicroService m = new SampleMicroservice();
         bus.register(m);
         m.initialize();
-        bus.sendEvent(new AttackEvent());
+        Event<Boolean> ev = new AttackEvent();
+        bus.sendEvent(ev);
         try 
         {
             Message msg = bus.awaitMessage(m);
-            assertTrue(msg != null);
+            assertEquals(ev, msg);
         }
         catch (InterruptedException ex)
         {
@@ -37,6 +40,20 @@ public class MessageBusImplTest extends MessageBusImpl {
             fail();
         }
 
+    }
+
+    @Test
+    public void testComplete()
+    {
+        MicroService m = new SampleMicroservice();
+        bus.register(m);
+        m.initialize();
+        Event<Boolean> ev = new AttackEvent();
+        Future<Boolean> future = bus.sendEvent(ev);
+        assertFalse(future.isDone());
+        bus.complete(ev, true);
+        assertTrue(future.isDone());
+        assertTrue(future.get());
     }
     
 }
