@@ -39,7 +39,8 @@ public class Future<T> {
      * Resolves the result of this Future object.
      */
 	public void resolve (T result) {
-		this.result = result;
+          this.result = result;
+          isDone = true;
 	}
 	
 	/**
@@ -61,8 +62,8 @@ public class Future<T> {
      *         elapsed, return null.
      */
 	public T get(long timeout, TimeUnit unit) {
-		
-        return null;
+          return result;
+
 	}
 
 }
