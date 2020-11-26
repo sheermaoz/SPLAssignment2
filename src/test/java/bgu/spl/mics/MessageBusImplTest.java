@@ -2,6 +2,7 @@ package bgu.spl.mics;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -28,7 +29,8 @@ public class MessageBusImplTest extends MessageBusImpl {
         bus.register(m);
         m.initialize();
         Event<Boolean> ev = new AttackEvent();
-        bus.sendEvent(ev);
+        Future<Boolean> future = bus.sendEvent(ev);
+        assertNotNull(future);
         try 
         {
             Message msg = bus.awaitMessage(m);
