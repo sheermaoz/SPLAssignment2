@@ -5,6 +5,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
 
+import java.sql.Time;
+import java.time.LocalTime;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -32,7 +35,9 @@ public class FutureTest {
 
     @Test
     public void testGet() {
+        LocalTime now = LocalTime.now();
         assertTrue((future.get(2, TimeUnit.SECONDS)) == null);
+        assertTrue(LocalTime.now().compareTo(now.plusSeconds(2)) != -1);
         String str = "someResult";
         future.resolve(str);
         assertFalse((future.get(2, TimeUnit.SECONDS)) == null);
