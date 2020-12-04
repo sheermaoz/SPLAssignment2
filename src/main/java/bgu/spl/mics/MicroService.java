@@ -19,14 +19,13 @@ package bgu.spl.mics;
  * <p>
  */
 public abstract class MicroService implements Runnable { 
-    
-
+    private String Name;
     /**
      * @param name the micro-service name (used mainly for debugging purposes -
      *             does not have to be unique)
      */
     public MicroService(String name) {
-    	
+    	Name = name;
     }
 
     /**
