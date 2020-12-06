@@ -13,6 +13,7 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class MessageBusImpl implements MessageBus {
     
+    private static MessageBusImpl instance = null;
     ConcurrentHashMap<MicroService,BlockingQueue<Message>> microservices = new ConcurrentHashMap<>();
     ConcurrentHashMap<Class<? extends Event<?>>,BlockingQueue<MicroService>> events = new ConcurrentHashMap<>();
     ConcurrentHashMap<Class<? extends Broadcast>,List<MicroService>> broadcasts = new ConcurrentHashMap<>();
@@ -22,7 +23,11 @@ public class MessageBusImpl implements MessageBus {
 
     public static MessageBusImpl getInstance()
     {
-        return new MessageBusImpl();
+        if (instance != null)
+        {
+            instance = new MessageBusImpl();
+        }
+        return instance;
     }
 
     
