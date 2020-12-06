@@ -11,14 +11,15 @@ import org.junit.jupiter.api.*;
 import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.services.*;
 
-public class MessageBusImplTest extends MessageBusImpl {
-    private MessageBusImpl bus;
+public class MessageBusImplTest {
+
+    private MessageBusImpl bus = MessageBusImpl.getInstance();
 
     
     @BeforeEach
     public void setUp()
     {
-        bus = new MessageBusImpl();
+        bus = MessageBusImpl.getInstance();
     }
     
     @Test
