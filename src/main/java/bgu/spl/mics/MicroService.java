@@ -34,7 +34,7 @@ public abstract class MicroService implements Runnable {
     public MicroService(String name) {
     	Name = name;
     	Bus = MessageBusImpl.getInstance();
-        MessagesMap = new HashMap<Class,Callback>();
+        MessagesMap = new HashMap<>();
     }
 
     /**
