@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.messages.DeactivationEvent;
 
 
 
@@ -14,11 +15,23 @@ import bgu.spl.mics.MicroService;
  */
 public class R2D2Microservice extends MicroService {
 
+    final long duration;
+
     public R2D2Microservice(long duration) {
         super("R2D2");
+        this.duration = duration;
     }
 
     @Override
     protected void initialize() {
+        subscribeEvent(DeactivationEvent.class, (ev)->{
+            try
+            {
+                Thread.sleep(duration);
+            }
+            catch (InterruptedException e){}
+            complete(ev, true);
+            
+        });
     }
 }
