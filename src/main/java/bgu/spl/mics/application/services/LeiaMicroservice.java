@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.passiveObjects.*;
+import bgu.spl.mics.*;
 
 /**
  * LeiaMicroservices Initialized with Attack objects, and sends them as  {@link AttackEvents}.
@@ -15,15 +17,21 @@ import bgu.spl.mics.application.passiveObjects.*;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class LeiaMicroservice extends MicroService {
-	private Attack[] attacks;
+    private Attack[] attacks;
+    private List<Future<Boolean>> futures;
 	
     public LeiaMicroservice(Attack[] attacks) {
         super("Leia");
-		this.attacks = attacks;
+        this.attacks = attacks;
+        this.futures = new ArrayList<>();
     }
 
     @Override
     protected void initialize() {
-    	
+        for (Attack attack : attacks)
+        {
+            Future<Boolean> future = sendEvent(new AttackEvent(attack));
+            futures.add(future);
+        }
     }
 }
