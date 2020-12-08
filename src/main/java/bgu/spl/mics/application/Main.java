@@ -8,6 +8,6 @@ import bgu.spl.mics.MessageBusImpl;
  */
 public class Main {
 	public static void main(String[] args) {
-		MessageBusImpl Bus = new MessageBusImpl();
+
 	}
 }
