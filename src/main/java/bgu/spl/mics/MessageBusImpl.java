@@ -23,7 +23,7 @@ public class MessageBusImpl implements MessageBus {
 
     public static MessageBusImpl getInstance()
     {
-        if (instance != null)
+        if (instance == null)
         {
             instance = new MessageBusImpl();
         }

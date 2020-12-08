@@ -22,7 +22,7 @@ public class C3POMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
-    subscribeEvent(AttackEvent.class, (AttackEvent i) ->{});
+        subscribeEvent(AttackEvent.class, (AttackEvent i) ->{});
     }
 
 

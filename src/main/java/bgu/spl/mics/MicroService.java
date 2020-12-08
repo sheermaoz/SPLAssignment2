@@ -1,4 +1,6 @@
 package bgu.spl.mics;
+import java.util.HashMap;
+
 
 /**
  * The MicroService is an abstract class that any micro-service in the system
@@ -20,12 +22,19 @@ package bgu.spl.mics;
  */
 public abstract class MicroService implements Runnable { 
     private String Name;
+    private static MessageBusImpl Bus;
+    protected HashMap<Class,Callback> MessagesMap;
+    private boolean flag = true;
+
+
     /**
      * @param name the micro-service name (used mainly for debugging purposes -
      *             does not have to be unique)
      */
     public MicroService(String name) {
     	Name = name;
+    	Bus = MessageBusImpl.getInstance();
+        MessagesMap = new HashMap<Class,Callback>();
     }
 
     /**
@@ -50,7 +59,8 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-    	
+    	Bus.subscribeEvent(type, this);
+        MessagesMap.put(type, callback);
     }
 
     /**
@@ -74,7 +84,8 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-    	
+    	Bus.subscribeBroadcast(type, this);
+        MessagesMap.put(type, callback);
     }
 
     /**
@@ -90,7 +101,9 @@ public abstract class MicroService implements Runnable {
      * 	       			null in case no micro-service has subscribed to {@code e.getClass()}.
      */
     protected final <T> Future<T> sendEvent(Event<T> e) {
-    	
+    	Future<T> future = Bus.sendEvent(e);
+    	if(future != null)
+    	    return future;
         return null; 
     }
 
@@ -101,7 +114,7 @@ public abstract class MicroService implements Runnable {
      * @param b The broadcast message to send
      */
     protected final void sendBroadcast(Broadcast b) {
-    	
+        Bus.sendBroadcast(b);
     }
 
     /**
@@ -115,7 +128,7 @@ public abstract class MicroService implements Runnable {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-    	
+    	Bus.complete(e, result);
     }
 
     /**
@@ -128,7 +141,7 @@ public abstract class MicroService implements Runnable {
      * message.
      */
     protected final void terminate() {
-    	
+        Bus.unregister(this);
     }
 
     /**
@@ -136,7 +149,7 @@ public abstract class MicroService implements Runnable {
      *         construction time and is used mainly for debugging purposes.
      */
     public final String getName() {
-        return null;
+        return Name;
     }
 
     /**
@@ -145,7 +158,16 @@ public abstract class MicroService implements Runnable {
      */
     @Override
     public final void run() {
-    	
+        Bus.register(this);
+        this.initialize();
+        while(this.flag){
+            Message newMessage=null;
+            try {
+                newMessage = Bus.awaitMessage(this);
+            } catch (InterruptedException ex) {};
+            MessagesMap.get(newMessage.getClass()).call(newMessage);
+        }
+        this.terminate();
     }
 
 }
