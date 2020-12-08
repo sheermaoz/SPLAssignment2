@@ -24,6 +24,7 @@ public abstract class MicroService implements Runnable {
     private String Name;
     private static MessageBusImpl Bus;
     protected HashMap<Class,Callback> MessagesMap;
+    private boolean flag = true;
 
 
     /**
@@ -140,6 +141,7 @@ public abstract class MicroService implements Runnable {
      * message.
      */
     protected final void terminate() {
+        Bus.unregister(this);
     }
 
     /**
@@ -158,14 +160,14 @@ public abstract class MicroService implements Runnable {
     public final void run() {
         Bus.register(this);
         this.initialize();
-        while(true){
+        while(this.flag){
             Message newMessage=null;
             try {
                 newMessage = Bus.awaitMessage(this);
             } catch (InterruptedException ex) {};
-            MessagesMap.get(newMessage);
+            MessagesMap.get(newMessage.getClass()).call(newMessage);
         }
-        //todo: this.terminate(); when finishing the main loop
+        this.terminate();
     }
 
 }
