@@ -22,4 +22,14 @@ public class AttackEvent implements Event<Boolean> {
         serials = new LinkedList<>();
     }
 
+    public int getTime()
+    {
+        return time;
+    }
+
+    public List<Integer> getSerials()
+    {
+        return serials;
+    }
+
 }
