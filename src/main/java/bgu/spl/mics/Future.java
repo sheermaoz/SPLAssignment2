@@ -1,5 +1,6 @@
 package bgu.spl.mics;
 
+import java.time.LocalTime;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -31,7 +32,11 @@ public class Future<T> {
      * 	       
      */
     public T get() {
-        
+        while(this.isDone()==false){}  //busy wait
+        /*while(this.isDone()==false){ //a better waiting method, but required to implement notify!!
+            wait();
+        }*/
+
         return result; 
     }
     
@@ -62,7 +67,11 @@ public class Future<T> {
      *         elapsed, return null.
      */
     public T get(long timeout, TimeUnit unit) {
-          return result;
+        long start = System.currentTimeMillis();
+        long timeoutMilli = unit.toMillis(timeout);
+        while(isDone() == false && ((System.currentTimeMillis()-start)<timeoutMilli)) {}  //busy wait
+        System.out.println(System.currentTimeMillis()-start);
+        return result;
     }
 
 }
