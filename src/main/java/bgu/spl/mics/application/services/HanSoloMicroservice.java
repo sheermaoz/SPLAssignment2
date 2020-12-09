@@ -20,6 +20,13 @@ public class HanSoloMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
-
+        this.subscribeEvent(AttackEvent.class, (ev) ->{
+            try
+            {
+                Thread.sleep(ev.getTime());
+            }
+            catch (InterruptedException e){}
+            complete(ev, true);
+        });
     }
 }

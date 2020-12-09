@@ -25,6 +25,12 @@ public class Main {
 		}
 
 		//tests
+		/*Runnable r = new A();
+		Thread t1 = new Thread(r);
+		Thread t2 = new Thread(r);
+
+		t1.start();*/
+
 		/*long start=System.currentTimeMillis();
 		for(int i=0;i<=100000;i++){}
 		System.out.println(System.currentTimeMillis()-start);
@@ -34,3 +40,5 @@ public class Main {
 		future.get(5, TimeUnit.SECONDS);*/
 	}
 }
+
+

@@ -1,6 +1,8 @@
 package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.messages.BombDestroyerEvent;
+import bgu.spl.mics.application.messages.DeactivationEvent;
 
 /**
  * LandoMicroservice
@@ -9,12 +11,22 @@ import bgu.spl.mics.MicroService;
  */
 public class LandoMicroservice  extends MicroService {
 
+    private final long duration;
+
     public LandoMicroservice(long duration) {
         super("Lando");
+        this.duration = duration;
     }
 
     @Override
     protected void initialize() {
-       
+        subscribeEvent(BombDestroyerEvent.class, (ev)->{
+            try
+            {
+                Thread.sleep(duration);
+            }
+            catch (InterruptedException e){}
+            complete(ev, true);
+        });
     }
 }
