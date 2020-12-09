@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 public class Future<T> {
     private boolean isDone;
     private T result;
+    private Object WaitObject;
+    private Object WaitObject2;
     
     /**
      * This should be the the only public constructor in this class.
@@ -32,10 +34,11 @@ public class Future<T> {
      * 	       
      */
     public T get() {
-        while(this.isDone()==false){}  //busy wait
-        /*while(this.isDone()==false){ //a better waiting method, but required to implement notify!!
-            wait();
-        }*/
+        while(this.isDone()==false){ //a better waiting method, but required to implement notify!!
+            try {
+                WaitObject.wait();
+            } catch (InterruptedException e){};
+        }
 
         return result; 
     }
@@ -46,6 +49,7 @@ public class Future<T> {
     public void resolve (T result) {
           this.result = result;
           isDone = true;
+          notifyAll();
     }
     
     /**
@@ -69,8 +73,11 @@ public class Future<T> {
     public T get(long timeout, TimeUnit unit) {
         long start = System.currentTimeMillis();
         long timeoutMilli = unit.toMillis(timeout);
-        while(isDone() == false && ((System.currentTimeMillis()-start)<timeoutMilli)) {}  //busy wait
-        System.out.println(System.currentTimeMillis()-start);
+        while(isDone() == false && ((System.currentTimeMillis()-start)<timeoutMilli)){
+            try {
+                unit.timedWait(WaitObject2, timeout);   //what happens if 2 threads try to wait on the same object ?
+            } catch (InterruptedException e){};
+        }
         return result;
     }
 
