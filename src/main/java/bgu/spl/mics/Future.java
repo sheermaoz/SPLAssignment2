@@ -13,8 +13,6 @@ import java.util.concurrent.TimeUnit;
 public class Future<T> {
     private boolean isDone;
     private T result;
-    private Object WaitObject;
-    private Object WaitObject2;
     
     /**
      * This should be the the only public constructor in this class.
@@ -35,10 +33,10 @@ public class Future<T> {
     public T get() {
         if(isDone)
             return result;
-        synchronized (WaitObject) {
+        synchronized (this) {
             while (!isDone) {
                 try {
-                    WaitObject.wait();
+                    this.wait();
                 } catch (InterruptedException e) {}
             }
         }
@@ -78,10 +76,10 @@ public class Future<T> {
             return result;
         }
         long timeoutMilli = unit.toMillis(timeout);
-        synchronized (WaitObject2) {
+        synchronized (this) {
             while (!isDone && ((System.currentTimeMillis() - start) < timeoutMilli)) {
                 try {
-                    unit.timedWait(WaitObject2, timeout);
+                    unit.timedWait(this, timeout);
                 } catch (InterruptedException e) {}
             }
         }
