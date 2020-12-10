@@ -19,11 +19,13 @@ import bgu.spl.mics.Future;
 public class LeiaMicroservice extends MicroService {
     private Attack[] attacks;
     private List<Future<Boolean>> futures;
+    private int attacksComplete;
 	
     public LeiaMicroservice(Attack[] attacks) {
         super("Leia");
         this.attacks = attacks;
         this.futures = new ArrayList<>();
+        attacksComplete = 0;
     }
 
     @Override
@@ -37,5 +39,17 @@ public class LeiaMicroservice extends MicroService {
             Future<Boolean> future = sendEvent(new AttackEvent(attack));
             futures.add(future);
         }
+
+        subscribeEvent(FinishedAttack, (event) - >{
+            attacksComplete++;
+            if (attacksComplete==attacks.length)
+            {
+                Future a = sendEvent(e);
+                a.get();
+                
+                
+
+            }
+        });
     }
 }

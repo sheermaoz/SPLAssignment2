@@ -6,6 +6,7 @@ import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.messages.DeactivationEvent;
 import bgu.spl.mics.application.messages.TerminationBroadcast;
+import bgu.spl.mics.application.passiveObjects.Ewoks;
 
 
 /**
@@ -28,7 +29,7 @@ public class C3POMicroservice extends MicroService {
             terminate();
         });
         this.subscribeEvent(AttackEvent.class, (ev) ->{
-                    //todo: aquire ewoks
+                    Ewoks ewoks = Ewoks.getInstance();
 
             try
             {

@@ -18,10 +18,26 @@ import bgu.spl.mics.MicroService;
 public class Ewoks {
 
     private static Ewoks instance = null;
-    private ConcurrentHashMap<Integer, Ewok> ewoks = new ConcurrentHashMap<>();
+    private Ewok[] ewoks;
 
     private Ewoks(){
+        ewoks = new Ewok[0];
+    }
+    private Ewoks(int num){
+        ewoks = new Ewok[num];
+        for (int i = 0; i < num; i++)
+        {
+            ewoks[i] = new Ewok(i+1);
+        }
+    }
 
+    public static Ewoks getInstance(int num)
+    {
+        if (instance == null)
+        {
+            instance = new Ewoks(num);
+        }
+        return instance;
     }
 
     public static Ewoks getInstance()
