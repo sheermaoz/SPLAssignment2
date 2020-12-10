@@ -3,6 +3,7 @@ package bgu.spl.mics.application.services;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.BombDestroyerEvent;
 import bgu.spl.mics.application.messages.DeactivationEvent;
+import bgu.spl.mics.application.messages.TerminationBroadcast;
 
 /**
  * LandoMicroservice
@@ -20,6 +21,9 @@ public class LandoMicroservice  extends MicroService {
 
     @Override
     protected void initialize() {
+        subscribeBroadcast(TerminationBroadcast.class, (ev)->{
+            terminate();
+        });
         subscribeEvent(BombDestroyerEvent.class, (ev)->{
             try
             {

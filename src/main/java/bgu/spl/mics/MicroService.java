@@ -141,6 +141,7 @@ public abstract class MicroService implements Runnable {
      * message.
      */
     protected final void terminate() {
+        flag=false;
         Bus.unregister(this);
     }
 
@@ -160,14 +161,14 @@ public abstract class MicroService implements Runnable {
     public final void run() {
         Bus.register(this);
         this.initialize();
-        while(this.flag){
+        while(flag){
             Message newMessage=null;
             try {
                 newMessage = Bus.awaitMessage(this);
             } catch (InterruptedException ex) {};
             MessagesMap.get(newMessage.getClass()).call(newMessage);
         }
-        this.terminate();
+                             //todo:capture here time for the diary.
     }
 
 }

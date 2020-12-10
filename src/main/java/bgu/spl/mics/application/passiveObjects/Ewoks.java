@@ -1,5 +1,11 @@
 package bgu.spl.mics.application.passiveObjects;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+
+import bgu.spl.mics.Message;
+import bgu.spl.mics.MessageBusImpl;
+import bgu.spl.mics.MicroService;
 
 /**
  * Passive object representing the resource manager.
@@ -11,4 +17,19 @@ package bgu.spl.mics.application.passiveObjects;
  */
 public class Ewoks {
 
+    private static Ewoks instance = null;
+    private ConcurrentHashMap<Integer, Ewok> ewoks = new ConcurrentHashMap<>();
+
+    private Ewoks(){
+
+    }
+
+    public static Ewoks getInstance()
+    {
+        if (instance == null)
+        {
+            instance = new Ewoks();
+        }
+        return instance;
+    }
 }

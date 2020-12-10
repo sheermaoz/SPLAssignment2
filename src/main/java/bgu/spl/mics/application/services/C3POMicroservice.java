@@ -5,6 +5,7 @@ import bgu.spl.mics.Event;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.messages.DeactivationEvent;
+import bgu.spl.mics.application.messages.TerminationBroadcast;
 
 
 /**
@@ -23,7 +24,12 @@ public class C3POMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
+        subscribeBroadcast(TerminationBroadcast.class, (ev)->{
+            terminate();
+        });
         this.subscribeEvent(AttackEvent.class, (ev) ->{
+                    //todo: aquire ewoks
+
             try
             {
                 Thread.sleep(ev.getTime());

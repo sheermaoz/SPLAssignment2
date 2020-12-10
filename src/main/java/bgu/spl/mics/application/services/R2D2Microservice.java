@@ -2,7 +2,7 @@ package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.DeactivationEvent;
-
+import bgu.spl.mics.application.messages.TerminationBroadcast;
 
 
 /**
@@ -24,6 +24,9 @@ public class R2D2Microservice extends MicroService {
 
     @Override
     protected void initialize() {
+        subscribeBroadcast(TerminationBroadcast.class, (ev)->{
+            terminate();
+        });
         subscribeEvent(DeactivationEvent.class, (ev)->{
             try
             {

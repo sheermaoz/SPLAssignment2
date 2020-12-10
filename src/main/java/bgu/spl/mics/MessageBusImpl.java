@@ -14,10 +14,10 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class MessageBusImpl implements MessageBus {
     
     private static MessageBusImpl instance = null;
-    ConcurrentHashMap<MicroService,BlockingQueue<Message>> microservices = new ConcurrentHashMap<>();
-    ConcurrentHashMap<Class<? extends Event<?>>,BlockingQueue<MicroService>> events = new ConcurrentHashMap<>();
-    ConcurrentHashMap<Class<? extends Broadcast>,List<MicroService>> broadcasts = new ConcurrentHashMap<>();
-    ConcurrentHashMap<Event<?>,Future> futures = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<MicroService,BlockingQueue<Message>> microservices = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Class<? extends Event<?>>,BlockingQueue<MicroService>> events = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Class<? extends Broadcast>,List<MicroService>> broadcasts = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Event<?>,Future> futures = new ConcurrentHashMap<>();
     
     private MessageBusImpl(){}
 
@@ -116,7 +116,7 @@ public class MessageBusImpl implements MessageBus {
 
     @Override
     public Message awaitMessage(MicroService m) throws InterruptedException {
-        
+
         return microservices.get(m).take();
     }
     

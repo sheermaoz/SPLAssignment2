@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.messages.TerminationBroadcast;
 import bgu.spl.mics.application.passiveObjects.*;
 import bgu.spl.mics.Future;
 
@@ -27,6 +28,10 @@ public class LeiaMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
+
+        subscribeBroadcast(TerminationBroadcast.class, (ev)->{
+            terminate();
+        });
         for (Attack attack : attacks)
         {
             Future<Boolean> future = sendEvent(new AttackEvent(attack));

@@ -3,6 +3,7 @@ package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
+import bgu.spl.mics.application.messages.TerminationBroadcast;
 
 /**
  * HanSoloMicroservices is in charge of the handling {@link AttackEvent}.
@@ -20,7 +21,11 @@ public class HanSoloMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
+        subscribeBroadcast(TerminationBroadcast.class, (ev)->{
+            terminate();
+        });
         this.subscribeEvent(AttackEvent.class, (ev) ->{
+                        //todo: aquire ewoks
             try
             {
                 Thread.sleep(ev.getTime());

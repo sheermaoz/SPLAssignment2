@@ -17,7 +17,7 @@ public class Main {
 		{
 			FileReader reader = new FileReader("input.json");
 			Input input = gson.fromJson(reader, Input.class);
-			System.out.println(input.getAttacks()[0].getDuration());
+			System.out.println(input.getAttacks()[0].getSerials());
 		}
 		catch (Exception e)
 		{

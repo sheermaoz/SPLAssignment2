@@ -1,6 +1,5 @@
 package bgu.spl.mics;
 
-import java.time.LocalTime;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,12 +33,15 @@ public class Future<T> {
      * 	       
      */
     public T get() {
-        while(this.isDone()==false){ //a better waiting method, but required to implement notify!!
-            try {
-                WaitObject.wait();
-            } catch (InterruptedException e){};
+        if(isDone)
+            return result;
+        synchronized (WaitObject) {
+            while (!isDone) {
+                try {
+                    WaitObject.wait();
+                } catch (InterruptedException e) {}
+            }
         }
-
         return result; 
     }
     
@@ -72,13 +74,19 @@ public class Future<T> {
      */
     public T get(long timeout, TimeUnit unit) {
         long start = System.currentTimeMillis();
+        if(isDone) {
+            return result;
+        }
         long timeoutMilli = unit.toMillis(timeout);
-        while(isDone() == false && ((System.currentTimeMillis()-start)<timeoutMilli)){
-            try {
-                unit.timedWait(WaitObject2, timeout);   //what happens if 2 threads try to wait on the same object ?
-            } catch (InterruptedException e){};
+        synchronized (WaitObject2) {
+            while (!isDone && ((System.currentTimeMillis() - start) < timeoutMilli)) {
+                try {
+                    unit.timedWait(WaitObject2, timeout);
+                } catch (InterruptedException e) {}
+            }
         }
         return result;
     }
+    //invariant - a thread will never be more then the timeout in the method, even if he's waiting for key.
 
 }
