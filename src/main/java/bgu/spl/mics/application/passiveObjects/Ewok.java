@@ -26,7 +26,8 @@ public class Ewok {
      * release an Ewok
      */
     public synchronized void release() {
-    	available = true;
+        available = true;
+        notifyAll();
     }
 
     public boolean getAvailable()

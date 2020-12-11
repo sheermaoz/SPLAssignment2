@@ -50,9 +50,20 @@ public class Ewoks {
         return instance;
     }
 
-    private boolean tryAcquire(int[] serials){
-
-
-        return false;
+    public void AcquireAll(int[] serials){
+        for(int i=0; i<serials.length; i++) {
+            boolean acquired = false;
+            synchronized (ewoks[serials[i]]) {
+                while (!acquired) {
+                    if (ewoks[serials[i]].available) {
+                        ewoks[i].acquire();
+                        acquired = true;
+                    } else try {
+                        ewoks[serials[i]].wait();
+                    } catch (InterruptedException ex) {
+                    }
+                }
+            }
+        }
     }
 }

@@ -5,8 +5,7 @@ import java.util.Arrays;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.messages.TerminationBroadcast;
-
-import java.util.Arrays;
+import bgu.spl.mics.application.passiveObjects.Ewoks;
 
 /**
  * HanSoloMicroservices is in charge of the handling {@link AttackEvent}.
@@ -28,11 +27,14 @@ public class HanSoloMicroservice extends MicroService {
             terminate();
         });
         this.subscribeEvent(AttackEvent.class, (ev) ->{
-            List<Integer> tempSerials = ev.getSerials();
+            List<Integer> tempSerials = ev.getSerials();   //init serials sorted array
             int[] serials = makeArray(tempSerials);
             Arrays.sort(serials);
 
-            try
+            Ewoks ewoks = Ewoks.getInstance();  //allocating resources
+            ewoks.AcquireAll(serials);
+
+            try     //act
             {
                 Thread.sleep(ev.getTime());
             }

@@ -1,12 +1,11 @@
 package bgu.spl.mics.application.services;
 
-import bgu.spl.mics.Callback;
-import bgu.spl.mics.Event;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
-import bgu.spl.mics.application.messages.DeactivationEvent;
 import bgu.spl.mics.application.messages.TerminationBroadcast;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -29,9 +28,14 @@ public class C3POMicroservice extends MicroService {
             terminate();
         });
         this.subscribeEvent(AttackEvent.class, (ev) ->{
-                    Ewoks ewoks = Ewoks.getInstance();
+            List<Integer> tempSerials = ev.getSerials();   //init serials sorted array
+            int[] serials = makeArray(tempSerials);
+            Arrays.sort(serials);
 
-            try
+            Ewoks ewoks = Ewoks.getInstance();  //allocating resources
+            ewoks.AcquireAll(serials);
+
+            try     //act
             {
                 Thread.sleep(ev.getTime());
             }
@@ -39,6 +43,14 @@ public class C3POMicroservice extends MicroService {
             complete(ev, true);
         });
 
+    }
+
+    private int[] makeArray (List<Integer> serials){
+        int[] result = new int[serials.size()];
+        for(int i=0; i<serials.size(); i++){
+            result[i] = serials.get(i);
+        }
+        return result;
     }
 
 
