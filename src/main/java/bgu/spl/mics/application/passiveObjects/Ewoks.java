@@ -20,10 +20,11 @@ public class Ewoks {
     private static Ewoks instance = null;
     private Ewok[] ewoks;
 
-    private Ewoks(){
+    private Ewoks(){      //default constructor
         ewoks = new Ewok[0];
     }
-    private Ewoks(int num){
+
+    private Ewoks(int num){     //constructor
         ewoks = new Ewok[num];
         for (int i = 0; i < num; i++)
         {
@@ -47,5 +48,11 @@ public class Ewoks {
             instance = new Ewoks();
         }
         return instance;
+    }
+
+    private boolean tryAcquire(int[] serials){
+
+
+        return false;
     }
 }

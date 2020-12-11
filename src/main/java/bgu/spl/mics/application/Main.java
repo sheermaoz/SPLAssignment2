@@ -1,8 +1,10 @@
 package bgu.spl.mics.application;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.io.FileReader;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-
+import bgu.spl.mics.application.passiveObjects.Ewoks;
 import bgu.spl.mics.Future;
 import com.google.gson.Gson;
 
@@ -12,17 +14,53 @@ import com.google.gson.Gson;
  */
 public class Main {
 	public static void main(String[] args) {
+		int ewoksNum = 0;
 		Gson gson = new Gson();
+
 		try
 		{
 			FileReader reader = new FileReader("input.json");
 			Input input = gson.fromJson(reader, Input.class);
+			ewoksNum = input.getEwoks();
 			System.out.println(input.getAttacks()[0].getSerials());
 		}
-		catch (Exception e)
-		{
-			System.out.println();
+		catch (Exception e) {System.out.println();}
+
+		Ewoks ewoks = Ewoks.getInstance(ewoksNum);
+
+
+
+		/*List<Integer> f = new ArrayList<Integer>();
+		f.add(5);
+		f.add(7);
+		f.add(3);
+		f.add(9);
+		f.add(1);
+		for(int i=0; i<f.size(); i++){
+			System.out.print(f.get(i)+" ");
 		}
+		int[] r = new int[f.size()];
+		for(int i=0; i<f.size(); i++){
+			r[i] = f.get(i);
+		}
+		Arrays.sort(r);
+		System.out.println();
+		for(int b : r){
+			System.out.print(b+" ");
+		}*/
+
+
+		/*int[] a = {2,1,6,3};
+		for(int b : a){
+			System.out.print(b+" ");
+		}
+		System.out.println();
+		Arrays.sort(a, 0, a.length);
+		for(int b : a){
+			System.out.print(b+" ");
+		}*/
+
+
 
 		//tests
 		/*Runnable r = new A();

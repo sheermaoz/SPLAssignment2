@@ -40,7 +40,7 @@ public class LeiaMicroservice extends MicroService {
             futures.add(future);
         }
 
-        subscribeEvent(FinishedAttack, (event) - >{
+        /*subscribeEvent(FinishedAttack, (event) ->{
             attacksComplete++;
             if (attacksComplete==attacks.length)
             {
@@ -50,6 +50,6 @@ public class LeiaMicroservice extends MicroService {
                 
 
             }
-        });
+        });*/
     }
 }
