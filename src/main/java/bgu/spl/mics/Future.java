@@ -79,7 +79,7 @@ public class Future<T> {
         synchronized (this) {
             while (!isDone && ((System.currentTimeMillis() - start) < timeoutMilli)) {
                 try {
-                    unit.timedWait(this, timeout);
+                    TimeUnit.MILLISECONDS.timedWait(this, timeoutMilli - (System.currentTimeMillis() - start));
                 } catch (InterruptedException e) {}
             }
         }
