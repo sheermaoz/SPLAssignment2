@@ -33,8 +33,14 @@ public class R2D2Microservice extends MicroService {
                 Thread.sleep(duration);
             }
             catch (InterruptedException e){}
+                    //todo: write the time of finished deactivation in diary (implement here)
             complete(ev, true);
             
         });
     }
+
+    protected void close(){
+        //todo: write the time of terminate in the dairy here
+    }
+
 }

@@ -18,5 +18,8 @@ public class SampleMicroservice extends MicroService {
         
     }
 
-    
+    @Override
+    protected void close() {
+
+    }
 }

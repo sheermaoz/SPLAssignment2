@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Arrays;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
+import bgu.spl.mics.application.messages.FinishedAttackEvent;
+import bgu.spl.mics.application.messages.FinishedAttacksBroadcast;
 import bgu.spl.mics.application.messages.TerminationBroadcast;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
 
@@ -26,6 +28,10 @@ public class HanSoloMicroservice extends MicroService {
         subscribeBroadcast(TerminationBroadcast.class, (ev)->{
             terminate();
         });
+        subscribeBroadcast(FinishedAttacksBroadcast.class, (br)->{
+            //todo: write the current time in the diary (HS finished attacks)
+        });
+
         this.subscribeEvent(AttackEvent.class, (ev) ->{
             List<Integer> tempSerials = ev.getSerials();   //init serials sorted array
             int[] serials = makeArray(tempSerials);
@@ -39,6 +45,7 @@ public class HanSoloMicroservice extends MicroService {
                 Thread.sleep(ev.getTime());
             }
             catch (InterruptedException e){}
+            sendEvent(new FinishedAttackEvent());
             complete(ev, true);
         });
     }
@@ -49,5 +56,9 @@ public class HanSoloMicroservice extends MicroService {
             result[i] = serials.get(i);
         }
         return result;
+    }
+
+    protected void close(){
+        //todo: write the time of terminate in the dairy here
     }
 }

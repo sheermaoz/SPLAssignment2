@@ -22,7 +22,7 @@ import java.util.HashMap;
  */
 public abstract class MicroService implements Runnable { 
     private String Name;
-    private static MessageBusImpl Bus;
+    protected static MessageBusImpl Bus;
     protected HashMap<Class,Callback> MessagesMap;
     private boolean flag = true;
 
@@ -142,8 +142,9 @@ public abstract class MicroService implements Runnable {
      */
     protected final void terminate() {
         flag=false;
-        Bus.unregister(this);
     }
+
+    protected abstract void close();
 
     /**
      * @return the name of the service - the service name is given to it in the
@@ -168,7 +169,9 @@ public abstract class MicroService implements Runnable {
             } catch (InterruptedException ex) {};
             MessagesMap.get(newMessage.getClass()).call(newMessage);
         }
-                             //todo:capture here time for the diary.
+        Bus.unregister(this);
+        this.close();
+        //todo:capture here time for the diary.
     }
 
 }

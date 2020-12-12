@@ -33,4 +33,9 @@ public class LandoMicroservice  extends MicroService {
             complete(ev, true);
         });
     }
+
+    protected void close(){
+        //todo: write the time of terminate in the dairy here
+    }
+
 }

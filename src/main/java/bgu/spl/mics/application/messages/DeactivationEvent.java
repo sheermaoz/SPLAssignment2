@@ -4,9 +4,8 @@ import bgu.spl.mics.Event;
 
 public class DeactivationEvent implements Event<Boolean>{
 
-    public DeactivationEvent()
-    {
-        
+    public DeactivationEvent(int time) {
     }
-    
+
+
 }

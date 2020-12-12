@@ -101,15 +101,13 @@ public class MessageBusImpl implements MessageBus {
     @Override
     public void unregister(MicroService m) {
         microservices.remove(m);
+
         for (BlockingQueue<MicroService> microServiceQueue : events.values())
-        {
             microServiceQueue.remove(m);
-        }
 
         for (List<MicroService> microServiceList : broadcasts.values())
-        {
             microServiceList.remove(m);
-        }
+
         
     }
 
@@ -119,5 +117,5 @@ public class MessageBusImpl implements MessageBus {
 
         return microservices.get(m).take();
     }
-    
+
 }

@@ -7,6 +7,8 @@ import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.TerminationBroadcast;
 import bgu.spl.mics.application.passiveObjects.*;
 import bgu.spl.mics.Future;
+import bgu.spl.mics.application.messages.FinishedAttackEvent;
+import bgu.spl.mics.application.messages.FinishedAttacksBroadcast;
 
 /**
  * LeiaMicroservices Initialized with Attack objects, and sends them as  {@link AttackEvent}.
@@ -19,13 +21,13 @@ import bgu.spl.mics.Future;
 public class LeiaMicroservice extends MicroService {
     private Attack[] attacks;
     private List<Future<Boolean>> futures;
-    private int attacksComplete;
+    private int attacksCompleted;
 	
     public LeiaMicroservice(Attack[] attacks) {
         super("Leia");
         this.attacks = attacks;
         this.futures = new ArrayList<>();
-        attacksComplete = 0;
+        attacksCompleted = 0;
     }
 
     @Override
@@ -40,16 +42,19 @@ public class LeiaMicroservice extends MicroService {
             futures.add(future);
         }
 
-        /*subscribeEvent(FinishedAttack, (event) ->{
-            attacksComplete++;
-            if (attacksComplete==attacks.length)
+        subscribeEvent(FinishedAttackEvent.class, (event) ->{
+            attacksCompleted++;
+            if (attacksCompleted==attacks.length)
             {
-                Future a = sendEvent(e);
-                a.get();
-                
-                
-
+               /* Future a = sendEvent(e);
+                a.get();*/
+                sendBroadcast(new FinishedAttacksBroadcast());
             }
-        });*/
+        });
     }
+
+    protected void close(){
+        //todo: write the time of terminate in the dairy here
+    }
+
 }

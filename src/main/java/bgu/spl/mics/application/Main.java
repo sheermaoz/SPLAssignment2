@@ -15,6 +15,8 @@ import com.google.gson.Gson;
 public class Main {
 	public static void main(String[] args) {
 		int ewoksNum = 0;
+		int R2D2Dur = 0;
+		int LandoDur = 0;
 		Gson gson = new Gson();
 
 		try
@@ -22,6 +24,8 @@ public class Main {
 			FileReader reader = new FileReader("input.json");
 			Input input = gson.fromJson(reader, Input.class);
 			ewoksNum = input.getEwoks();
+			R2D2Dur = input.getR2D2();
+			LandoDur = input.getLando();
 			System.out.println(input.getAttacks()[0].getSerials());
 		}
 		catch (Exception e) {System.out.println();}
