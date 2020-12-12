@@ -85,6 +85,6 @@ public class Future<T> {
         }
         return result;
     }
-    //invariant - a thread will never be more then the timeout in the method, even if he's waiting for key.
+
 
 }
