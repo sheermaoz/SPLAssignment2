@@ -25,12 +25,8 @@ public class HanSoloMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
-        subscribeBroadcast(TerminationBroadcast.class, (ev)->{
-            terminate();
-        });
-        subscribeBroadcast(FinishedAttacksBroadcast.class, (br)->{
-            diary.setHanSoloFinish(System.currentTimeMillis());
-        });
+        subscribeBroadcast(TerminationBroadcast.class, (ev)-> terminate());
+        subscribeBroadcast(FinishedAttacksBroadcast.class, (br)-> diary.setHanSoloFinish(System.currentTimeMillis()));
 
         this.subscribeEvent(AttackEvent.class, (ev) ->{
             List<Integer> tempSerials = ev.getSerials();   //init serials sorted array
@@ -44,7 +40,7 @@ public class HanSoloMicroservice extends MicroService {
             {
                 Thread.sleep(ev.getTime());
             }
-            catch (InterruptedException e){}
+            catch (InterruptedException ignored){}
             diary.addAttack();
             ewoks.ReleaseAll(serials);
             sendEvent(new FinishedAttackEvent());

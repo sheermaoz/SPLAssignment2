@@ -26,13 +26,9 @@ public class C3POMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
-        subscribeBroadcast(TerminationBroadcast.class, (ev)->{
-            terminate();
-        });
+        subscribeBroadcast(TerminationBroadcast.class, (ev)-> terminate());
 
-        subscribeBroadcast(FinishedAttacksBroadcast.class, (br)->{
-                diary.setC3POFinish(System.currentTimeMillis());
-        });
+        subscribeBroadcast(FinishedAttacksBroadcast.class, (br)-> diary.setC3POFinish(System.currentTimeMillis()));
 
         this.subscribeEvent(AttackEvent.class, (ev) ->{
             List<Integer> tempSerials = ev.getSerials();   //init serials sorted array
@@ -46,8 +42,9 @@ public class C3POMicroservice extends MicroService {
             {
                 Thread.sleep(ev.getTime());
             }
-            catch (InterruptedException e){}
+            catch (InterruptedException ignored){}
             diary.addAttack();
+            ewoks.ReleaseAll(serials);
             sendEvent(new FinishedAttackEvent());
             complete(ev, true);
         });
