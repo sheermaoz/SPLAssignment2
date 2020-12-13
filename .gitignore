@@ -6,3 +6,4 @@ target/
 .idea/
 *.tar.gz
 output.json
+input.json

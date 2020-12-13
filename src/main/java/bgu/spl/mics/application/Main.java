@@ -24,11 +24,12 @@ import com.google.gson.GsonBuilder;
  * In the end, you should output a JSON.
  */
 public class Main {
-    public static CountDownLatch latch = new CountDownLatch(2);
+    public static CountDownLatch latch;
 
     
     public static void main(String[] args) {
         int ewoksNum = 0;
+        latch = new CountDownLatch(2);
         Attack[] attacks = new Attack[0];
         int LandoDuration = 0;
         int R2D2Duration = 0;
@@ -42,24 +43,24 @@ public class Main {
             LandoDuration = input.getLando();
             R2D2Duration = input.getR2D2();
             ewoksNum = input.getEwoks();
+            System.out.println(attacks.length);
             
 
         }
         catch (FileNotFoundException e) {e.printStackTrace();}
-        
         Diary diary = Diary.getInstance();
         Runnable leia = new LeiaMicroservice(attacks);
         Runnable han = new HanSoloMicroservice();
         Runnable c3po = new C3POMicroservice();
         Runnable r2d2 = new R2D2Microservice(R2D2Duration);
         Runnable lando = new LandoMicroservice(LandoDuration);
-        
+        System.out.println("Created all microservices");
         Thread leiaThread = new Thread(leia);
         Thread hanThread = new Thread(han);
         Thread c3poThread = new Thread(c3po);
         Thread r2d2Thread = new Thread(r2d2);
         Thread landoThread = new Thread(lando);
-        
+        System.out.println("Created all threads");
         Ewoks ewoks = Ewoks.getInstance();
         Ewoks.init(ewoksNum);
 
@@ -68,6 +69,7 @@ public class Main {
         r2d2Thread.start();
         landoThread.start();
         leiaThread.start();
+        System.out.println("started all threads");
         try 
         {
             leiaThread.join();
@@ -77,16 +79,19 @@ public class Main {
             landoThread.join();
         }
         catch(Exception e){}
+
+        System.out.println("Closed all microservices");
         Gson outputGson  = new GsonBuilder().setPrettyPrinting().create();
         try
         {
-            FileWriter writer = new FileWriter("output.json");
+            FileWriter writer = new FileWriter("Output.json");
             outputGson.toJson(diary, writer);
             writer.flush();
             writer.close();
 
         }
         catch (IOException e ){e.printStackTrace();}
+        System.out.println("Finished json");
 
 
         //Ewoks ewoks = Ewoks.getInstance(ewoksNum);

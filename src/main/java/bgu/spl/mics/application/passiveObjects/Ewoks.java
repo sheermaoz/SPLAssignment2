@@ -48,7 +48,7 @@ public class Ewoks {
             synchronized (ewoks[serials[i]-1]) {
                 while (!acquired) {
                     if (ewoks[serials[i]-1].available) {
-                        ewoks[i].acquire();
+                        ewoks[serials[i]-1].acquire();
                         acquired = true;
                     } else try {
                         ewoks[serials[i]-1].wait();
