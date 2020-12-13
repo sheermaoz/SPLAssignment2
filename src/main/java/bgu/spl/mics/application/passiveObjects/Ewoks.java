@@ -34,7 +34,11 @@ public class Ewoks {
 
     private Ewoks(){}
 
-    public static void init(int num){   //initialize the ewoks array
+    /**
+     * initializes the ewoks array
+     * @param num : number of ewoks exists
+     */
+    public static void init(int num){
         ewoks = new Ewok[num];
         for (int i = 0; i < num; i++)
         {
@@ -42,9 +46,12 @@ public class Ewoks {
         }
     }
 
-    //the method gets a serials array, each microservice try to aquire all of the
-    //ewoks with those serials together if it's possible, else the microservice will
-    //wait for them to release and then aquire them.
+    /**
+     * the method gets a serials array, each microservice try to acquire all of the
+     * ewoks with those serials together if it's possible, else the microservice will
+     * wait for them to release and then acquire them.
+     * @param serials : the serials of the ewoks required for the attack
+    */
 
     public void AcquireAll(int[] serials){
         for(int i=0; i<serials.length; i++) {
@@ -63,7 +70,8 @@ public class Ewoks {
         }
     }
 
-    //the method release all the ewoks with the serials in the input array
+    /** the method release all the ewoks with the serials in the input array
+     * @param serials :the serials of the ewoks used for the attack */
 
     public void ReleaseAll(int[] serials){
         for(int i=0; i<serials.length; i++){
