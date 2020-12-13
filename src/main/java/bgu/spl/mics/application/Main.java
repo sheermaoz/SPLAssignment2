@@ -37,7 +37,7 @@ public class Main {
 
         try
         {
-            FileReader reader = new FileReader("input.json");
+            FileReader reader = new FileReader(args[1]);
             Input input = gson.fromJson(reader, Input.class);
             attacks = input.getAttacks();
             LandoDuration = input.getLando();
@@ -54,13 +54,11 @@ public class Main {
         Runnable c3po = new C3POMicroservice();
         Runnable r2d2 = new R2D2Microservice(R2D2Duration);
         Runnable lando = new LandoMicroservice(LandoDuration);
-        System.out.println("Created all microservices");
         Thread leiaThread = new Thread(leia);
         Thread hanThread = new Thread(han);
         Thread c3poThread = new Thread(c3po);
         Thread r2d2Thread = new Thread(r2d2);
         Thread landoThread = new Thread(lando);
-        System.out.println("Created all threads");
         Ewoks ewoks = Ewoks.getInstance();
         Ewoks.init(ewoksNum);
 
@@ -69,7 +67,6 @@ public class Main {
         r2d2Thread.start();
         landoThread.start();
         leiaThread.start();
-        System.out.println("started all threads");
         try 
         {
             leiaThread.join();
@@ -80,18 +77,16 @@ public class Main {
         }
         catch(Exception e){}
 
-        System.out.println("Closed all microservices");
         Gson outputGson  = new GsonBuilder().setPrettyPrinting().create();
         try
         {
-            FileWriter writer = new FileWriter("Output.json");
+            FileWriter writer = new FileWriter(args[2]);
             outputGson.toJson(diary, writer);
             writer.flush();
             writer.close();
 
         }
         catch (IOException e ){e.printStackTrace();}
-        System.out.println("Finished json");
 
 
         //Ewoks ewoks = Ewoks.getInstance(ewoksNum);
