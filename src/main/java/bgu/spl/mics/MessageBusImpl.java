@@ -1,5 +1,6 @@
 package bgu.spl.mics;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -41,7 +42,7 @@ public class MessageBusImpl implements MessageBus {
         if (!events.containsKey(type))
         {
             BlockingQueue<MicroService> newQueue = new LinkedBlockingDeque<>();
-            events.put(type,newQueue);
+            events.putIfAbsent(type,newQueue);
             
         }
         
@@ -56,7 +57,7 @@ public class MessageBusImpl implements MessageBus {
         {
             List<MicroService> lst = new LinkedList<>();
             lst.add(m);
-            broadcasts.put(type, lst);
+            broadcasts.putIfAbsent(type, lst);
             
         }
         else
@@ -74,10 +75,11 @@ public class MessageBusImpl implements MessageBus {
 
     @Override
     public void sendBroadcast(Broadcast b) {
-        List<MicroService> toSend = broadcasts.get(b.getClass());
-        for (MicroService m : toSend)
+        List<MicroService> toSend = new LinkedList<>(broadcasts.get(b.getClass()));
+        for (Iterator<MicroService> iter = toSend.iterator(); iter.hasNext();)
         {
-            microservices.get(m).offer(b);
+            //MicroService m = iter.next();
+            microservices.get(iter.next()).offer(b);
         }
         
     }
@@ -96,7 +98,7 @@ public class MessageBusImpl implements MessageBus {
         if (m != null)
         {
             Future<T> future = new Future<>();
-            futures.put(e, future);
+            futures.putIfAbsent(e, future);
             
             events.get(e.getClass()).offer(m);
             microservices.get(m).offer(e);
@@ -109,13 +111,12 @@ public class MessageBusImpl implements MessageBus {
 
     @Override
     public void register(MicroService m) {
-        microservices.put(m, new LinkedBlockingDeque<>());
+        microservices.putIfAbsent(m, new LinkedBlockingDeque<>());
     }
 
     @Override
     public void unregister(MicroService m) {
         microservices.remove(m);
-
         for (BlockingQueue<MicroService> microServiceQueue : events.values())
             microServiceQueue.remove(m);
 
