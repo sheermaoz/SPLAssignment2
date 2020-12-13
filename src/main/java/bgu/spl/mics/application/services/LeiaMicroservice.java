@@ -1,14 +1,11 @@
 package bgu.spl.mics.application.services;
-import bgu.spl.mics.application.messages.AttackEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import bgu.spl.mics.MicroService;
-import bgu.spl.mics.application.messages.TerminationBroadcast;
+import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.*;
 import bgu.spl.mics.Future;
-import bgu.spl.mics.application.messages.FinishedAttackEvent;
-import bgu.spl.mics.application.messages.FinishedAttacksBroadcast;
 
 /**
  * LeiaMicroservices Initialized with Attack objects, and sends them as  {@link AttackEvent}.
@@ -44,17 +41,21 @@ public class LeiaMicroservice extends MicroService {
 
         subscribeEvent(FinishedAttackEvent.class, (event) ->{
             attacksCompleted++;
-            if (attacksCompleted==attacks.length)
+            if (attacksCompleted == attacks.length)
             {
-               /* Future a = sendEvent(e);
-                a.get();*/
                 sendBroadcast(new FinishedAttacksBroadcast());
+                Future<Boolean> r2d2Future = sendEvent(new DeactivationEvent());
+                r2d2Future.get();
+                Future<Boolean> landoFuture = sendEvent(new BombDestroyerEvent());
+                landoFuture.get();
+                sendBroadcast(new TerminationBroadcast());
+                
             }
         });
     }
 
     protected void close(){
-        //todo: write the time of terminate in the dairy here
+        diary.setLeiaTerminate(System.currentTimeMillis());
     }
 
 }
