@@ -1,5 +1,6 @@
 package bgu.spl.mics;
 import java.util.HashMap;
+import bgu.spl.mics.application.passiveObjects.Diary;
 
 
 /**
@@ -25,6 +26,7 @@ public abstract class MicroService implements Runnable {
     protected static MessageBusImpl Bus;
     protected HashMap<Class,Callback> MessagesMap;
     private boolean flag = true;
+    protected static Diary diary;
 
 
     /**
@@ -35,6 +37,7 @@ public abstract class MicroService implements Runnable {
     	Name = name;
     	Bus = MessageBusImpl.getInstance();
         MessagesMap = new HashMap<>();
+        diary = Diary.getInstance();
     }
 
     /**
@@ -141,7 +144,8 @@ public abstract class MicroService implements Runnable {
      * message.
      */
     protected final void terminate() {
-        flag=false;
+        Bus.unregister(this);
+        close();
     }
 
     protected abstract void close();
@@ -169,8 +173,6 @@ public abstract class MicroService implements Runnable {
             } catch (InterruptedException ex) {};
             MessagesMap.get(newMessage.getClass()).call(newMessage);
         }
-        Bus.unregister(this);
-        this.close();
         //todo:capture here time for the diary.
     }
 
