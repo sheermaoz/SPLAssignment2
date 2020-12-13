@@ -55,7 +55,8 @@ public class Main {
         Thread landoThread = new Thread(lando);
         hanThread.start();
         c3poThread.start();
-        //Ewoks
+        Ewoks ewoks = Ewoks.getInstance();
+        Ewoks.init(ewoksNum);
         r2d2Thread.start();
         landoThread.start();
         leiaThread.start();

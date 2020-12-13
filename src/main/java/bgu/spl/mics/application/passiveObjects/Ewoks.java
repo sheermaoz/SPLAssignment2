@@ -18,36 +18,28 @@ import bgu.spl.mics.MicroService;
 public class Ewoks {
 
     private static Ewoks instance = null;
-    private Ewok[] ewoks;
+    private static Ewok[] ewoks;
 
-    private Ewoks(){      //default constructor
-        ewoks = new Ewok[0];
+
+
+    private static class EwoksHolder
+    {
+        private static Ewoks instance = new Ewoks();
     }
 
-    private Ewoks(int num){     //constructor
+    public static Ewoks getInstance()
+    {
+        return Ewoks.EwoksHolder.instance;
+    }
+
+    private Ewoks(){}
+
+    public static void init(int num){
         ewoks = new Ewok[num];
         for (int i = 0; i < num; i++)
         {
             ewoks[i] = new Ewok(i+1);
         }
-    }
-
-    public static Ewoks getInstance(int num)
-    {
-        if (instance == null)
-        {
-            instance = new Ewoks(num);
-        }
-        return instance;
-    }
-
-    public static Ewoks getInstance()
-    {
-        if (instance == null)
-        {
-            instance = new Ewoks();
-        }
-        return instance;
     }
 
     public void AcquireAll(int[] serials){
@@ -66,4 +58,13 @@ public class Ewoks {
             }
         }
     }
+
+    public void ReleaseAll(int[] serials){
+        for(int i=0; i<serials.length; i++){
+            ewoks[serials[i]].release();
+        }
+
+    }
+
+
 }

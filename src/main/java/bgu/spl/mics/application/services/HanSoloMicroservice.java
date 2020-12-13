@@ -46,6 +46,7 @@ public class HanSoloMicroservice extends MicroService {
             }
             catch (InterruptedException e){}
             diary.addAttack();
+            ewoks.ReleaseAll(serials);
             sendEvent(new FinishedAttackEvent());
             complete(ev, true);
         });
