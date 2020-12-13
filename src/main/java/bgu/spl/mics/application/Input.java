@@ -4,9 +4,9 @@ import bgu.spl.mics.application.passiveObjects.*;
 
 public class Input {
     private Attack[] attacks;
-	int R2D2;
-	int Lando;
-	int Ewoks;
+	private int R2D2;
+	private int Lando;
+	private int Ewoks;
 	
 	public int getEwoks() {
 		return Ewoks;
