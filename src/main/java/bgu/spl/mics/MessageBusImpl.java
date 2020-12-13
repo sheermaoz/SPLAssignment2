@@ -13,11 +13,18 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class MessageBusImpl implements MessageBus {
     
-    private ConcurrentHashMap<MicroService,BlockingQueue<Message>> microservices = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<Class<? extends Event<?>>,BlockingQueue<MicroService>> events = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<Class<? extends Broadcast>,List<MicroService>> broadcasts = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<Event<?>,Future> futures = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<MicroService,BlockingQueue<Message>> microservices;
+    private ConcurrentHashMap<Class<? extends Event<?>>,BlockingQueue<MicroService>> events;
+    private ConcurrentHashMap<Class<? extends Broadcast>,List<MicroService>> broadcasts;
+    private ConcurrentHashMap<Event<?>,Future> futures;
     
+    private MessageBusImpl()
+    {
+        microservices = new ConcurrentHashMap<>();
+        events = new ConcurrentHashMap<>();
+        broadcasts = new ConcurrentHashMap<>();
+        futures = new ConcurrentHashMap<>();
+    }
     private static class MessageBusHolder
     {
         private static MessageBusImpl instance = new MessageBusImpl();
