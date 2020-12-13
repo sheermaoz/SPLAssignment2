@@ -45,13 +45,13 @@ public class Ewoks {
     public void AcquireAll(int[] serials){
         for(int i=0; i<serials.length; i++) {
             boolean acquired = false;
-            synchronized (ewoks[serials[i]]) {
+            synchronized (ewoks[serials[i]-1]) {
                 while (!acquired) {
-                    if (ewoks[serials[i]].available) {
+                    if (ewoks[serials[i]-1].available) {
                         ewoks[i].acquire();
                         acquired = true;
                     } else try {
-                        ewoks[serials[i]].wait();
+                        ewoks[serials[i]-1].wait();
                     } catch (InterruptedException ex) {
                     }
                 }
@@ -61,7 +61,7 @@ public class Ewoks {
 
     public void ReleaseAll(int[] serials){
         for(int i=0; i<serials.length; i++){
-            ewoks[serials[i]].release();
+            ewoks[serials[i]-1].release();
         }
 
     }

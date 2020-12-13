@@ -34,8 +34,9 @@ public class HanSoloMicroservice extends MicroService {
             Arrays.sort(serials);
 
             Ewoks ewoks = Ewoks.getInstance();  //allocating resources
+            
             ewoks.AcquireAll(serials);
-
+            
             try     //act
             {
                 Thread.sleep(ev.getTime());

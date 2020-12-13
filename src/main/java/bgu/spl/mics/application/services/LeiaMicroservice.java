@@ -29,11 +29,13 @@ public class LeiaMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
+        
 
         subscribeBroadcast(TerminationBroadcast.class, (ev)->{
             terminate();
         });
         subscribeEvent(FinishedAttackEvent.class, (event) ->{
+            
             attacksCompleted++;
             if (attacksCompleted == attacks.length)
             {
@@ -46,11 +48,12 @@ public class LeiaMicroservice extends MicroService {
                 
             }
         });
-        
+
         for (Attack attack : attacks)
         {
             Future<Boolean> future = sendEvent(new AttackEvent(attack));
             futures.add(future);
+            
         }
 
     }

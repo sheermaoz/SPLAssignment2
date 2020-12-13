@@ -57,6 +57,7 @@ public class Main {
         c3poThread.start();
         Ewoks ewoks = Ewoks.getInstance();
         Ewoks.init(ewoksNum);
+        try{Thread.sleep(3);}catch(Exception e){}
         r2d2Thread.start();
         landoThread.start();
         leiaThread.start();

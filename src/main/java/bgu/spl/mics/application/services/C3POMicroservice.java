@@ -37,7 +37,7 @@ public class C3POMicroservice extends MicroService {
 
             Ewoks ewoks = Ewoks.getInstance();  //allocating resources
             ewoks.AcquireAll(serials);
-
+            
             try     //act
             {
                 Thread.sleep(ev.getTime());

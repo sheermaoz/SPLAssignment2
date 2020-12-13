@@ -38,19 +38,21 @@ public class MessageBusImpl implements MessageBus {
     
     @Override
     public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
-        if (!events.contains(type))
+        if (!events.containsKey(type))
         {
             BlockingQueue<MicroService> newQueue = new LinkedBlockingDeque<>();
             events.put(type,newQueue);
             
         }
+        
         events.get(type).add(m);
+        
         
     }
 
     @Override
     public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
-        if (!broadcasts.contains(type))
+        if (!broadcasts.containsKey(type))
         {
             List<MicroService> lst = new LinkedList<>();
             lst.add(m);
@@ -84,15 +86,18 @@ public class MessageBusImpl implements MessageBus {
     @Override
     public <T> Future<T> sendEvent(Event<T> e) {
         
-        if (!events.contains(e.getClass()))
+        
+        if (!events.containsKey(e.getClass()))
         {
             return null;
         }
         MicroService m = events.get(e.getClass()).poll();
+        
         if (m != null)
         {
             Future<T> future = new Future<>();
             futures.put(e, future);
+            
             events.get(e.getClass()).offer(m);
             microservices.get(m).offer(e);
             return future;
