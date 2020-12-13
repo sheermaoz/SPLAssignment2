@@ -72,7 +72,7 @@ public class Main {
         Gson outputGson  = new GsonBuilder().setPrettyPrinting().create();
         try
         {
-            FileWriter writer = new FileWriter(args[2]);
+            FileWriter writer = new FileWriter("output.json");
             outputGson.toJson(diary, writer);
             writer.flush();
             writer.close();
