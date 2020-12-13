@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.Main;
 import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.messages.FinishedAttackEvent;
 import bgu.spl.mics.application.messages.FinishedAttacksBroadcast;
@@ -49,6 +50,7 @@ public class C3POMicroservice extends MicroService {
             complete(ev, true);
         });
 
+        Main.latch.countDown();
     }
 
     private int[] makeArray (List<Integer> serials){

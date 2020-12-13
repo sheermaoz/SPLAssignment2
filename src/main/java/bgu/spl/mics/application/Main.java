@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import bgu.spl.mics.application.passiveObjects.*;
 import bgu.spl.mics.application.services.C3POMicroservice;
@@ -23,6 +24,9 @@ import com.google.gson.GsonBuilder;
  * In the end, you should output a JSON.
  */
 public class Main {
+    public static CountDownLatch latch = new CountDownLatch(2);
+
+    
     public static void main(String[] args) {
         int ewoksNum = 0;
         Attack[] attacks = new Attack[0];
@@ -42,22 +46,25 @@ public class Main {
 
         }
         catch (FileNotFoundException e) {e.printStackTrace();}
+        
         Diary diary = Diary.getInstance();
         Runnable leia = new LeiaMicroservice(attacks);
         Runnable han = new HanSoloMicroservice();
         Runnable c3po = new C3POMicroservice();
         Runnable r2d2 = new R2D2Microservice(R2D2Duration);
         Runnable lando = new LandoMicroservice(LandoDuration);
+        
         Thread leiaThread = new Thread(leia);
         Thread hanThread = new Thread(han);
         Thread c3poThread = new Thread(c3po);
         Thread r2d2Thread = new Thread(r2d2);
         Thread landoThread = new Thread(lando);
-        hanThread.start();
-        c3poThread.start();
+        
         Ewoks ewoks = Ewoks.getInstance();
         Ewoks.init(ewoksNum);
-        try{Thread.sleep(3);}catch(Exception e){}
+
+        hanThread.start();
+        c3poThread.start();
         r2d2Thread.start();
         landoThread.start();
         leiaThread.start();

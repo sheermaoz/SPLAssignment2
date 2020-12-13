@@ -3,6 +3,7 @@ package bgu.spl.mics.application.services;
 import java.util.List;
 import java.util.Arrays;
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.Main;
 import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.messages.FinishedAttackEvent;
 import bgu.spl.mics.application.messages.FinishedAttacksBroadcast;
@@ -47,6 +48,8 @@ public class HanSoloMicroservice extends MicroService {
             sendEvent(new FinishedAttackEvent());
             complete(ev, true);
         });
+
+        Main.latch.countDown();
     }
 
     private int[] makeArray (List<Integer> serials){

@@ -38,7 +38,7 @@ public class MessageBusImpl implements MessageBus {
 
     
     @Override
-    public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
+    public synchronized <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
         if (!events.containsKey(type))
         {
             BlockingQueue<MicroService> newQueue = new LinkedBlockingDeque<>();
@@ -52,7 +52,7 @@ public class MessageBusImpl implements MessageBus {
     }
 
     @Override
-    public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
+    public synchronized void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
         if (!broadcasts.containsKey(type))
         {
             List<MicroService> lst = new LinkedList<>();
