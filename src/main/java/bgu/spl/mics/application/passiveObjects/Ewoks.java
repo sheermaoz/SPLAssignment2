@@ -62,7 +62,7 @@ public class Ewoks {
             }
         }
     }
-    
+
     //the method release all the ewoks with the serials in the input array
 
     public void ReleaseAll(int[] serials){
