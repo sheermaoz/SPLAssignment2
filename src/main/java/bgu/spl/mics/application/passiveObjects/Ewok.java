@@ -30,6 +30,10 @@ public class Ewok {
         notifyAll();
     }
 
+    /**
+     *
+     * @return the ewok's availability
+     */
     public boolean getAvailable()
     {
         return available;

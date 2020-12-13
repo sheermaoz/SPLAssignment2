@@ -38,7 +38,7 @@ public class HanSoloMicroservice extends MicroService {
             
             ewoks.AcquireAll(serials);
             
-            try     //act
+            try     //the actual attack
             {
                 Thread.sleep(ev.getTime());
             }
