@@ -33,12 +33,6 @@ public class LeiaMicroservice extends MicroService {
         subscribeBroadcast(TerminationBroadcast.class, (ev)->{
             terminate();
         });
-        for (Attack attack : attacks)
-        {
-            Future<Boolean> future = sendEvent(new AttackEvent(attack));
-            futures.add(future);
-        }
-
         subscribeEvent(FinishedAttackEvent.class, (event) ->{
             attacksCompleted++;
             if (attacksCompleted == attacks.length)
@@ -52,6 +46,13 @@ public class LeiaMicroservice extends MicroService {
                 
             }
         });
+        
+        for (Attack attack : attacks)
+        {
+            Future<Boolean> future = sendEvent(new AttackEvent(attack));
+            futures.add(future);
+        }
+
     }
 
     protected void close(){
