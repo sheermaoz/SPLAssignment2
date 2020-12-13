@@ -7,3 +7,6 @@ target/
 *.tar.gz
 output.json
 input.json
+Tester.java
+Test.java
+InvokeTest.java
