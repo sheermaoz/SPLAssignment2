@@ -144,8 +144,7 @@ public abstract class MicroService implements Runnable {
      * message.
      */
     protected final void terminate() {
-        Bus.unregister(this);
-        close();
+        flag = false;
     }
 
     protected abstract void close();
@@ -173,7 +172,8 @@ public abstract class MicroService implements Runnable {
             } catch (InterruptedException ex) {};
             MessagesMap.get(newMessage.getClass()).call(newMessage);
         }
-        //todo:capture here time for the diary.
+        Bus.unregister(this);
+        close();
     }
 
 }
