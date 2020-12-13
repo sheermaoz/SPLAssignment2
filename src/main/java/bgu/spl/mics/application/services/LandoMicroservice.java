@@ -2,7 +2,6 @@ package bgu.spl.mics.application.services;
 
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.BombDestroyerEvent;
-import bgu.spl.mics.application.messages.DeactivationEvent;
 import bgu.spl.mics.application.messages.TerminationBroadcast;
 
 /**
@@ -35,7 +34,7 @@ public class LandoMicroservice  extends MicroService {
     }
 
     protected void close(){
-        //todo: write the time of terminate in the dairy here
+        diary.setLandoTerminate(System.currentTimeMillis());
     }
 
 }

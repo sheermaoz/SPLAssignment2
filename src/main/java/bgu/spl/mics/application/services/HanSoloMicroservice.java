@@ -29,7 +29,7 @@ public class HanSoloMicroservice extends MicroService {
             terminate();
         });
         subscribeBroadcast(FinishedAttacksBroadcast.class, (br)->{
-            //todo: write the current time in the diary (HS finished attacks)
+            diary.setHanSoloFinish(System.currentTimeMillis());
         });
 
         this.subscribeEvent(AttackEvent.class, (ev) ->{
@@ -45,6 +45,7 @@ public class HanSoloMicroservice extends MicroService {
                 Thread.sleep(ev.getTime());
             }
             catch (InterruptedException e){}
+            diary.addAttack();
             sendEvent(new FinishedAttackEvent());
             complete(ev, true);
         });
@@ -59,6 +60,6 @@ public class HanSoloMicroservice extends MicroService {
     }
 
     protected void close(){
-        //todo: write the time of terminate in the dairy here
+        diary.setHanSoloTerminate(System.currentTimeMillis());
     }
 }

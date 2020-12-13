@@ -31,7 +31,7 @@ public class C3POMicroservice extends MicroService {
         });
 
         subscribeBroadcast(FinishedAttacksBroadcast.class, (br)->{
-                //todo: write the current time in the diary (C3PO finished attacks)
+                diary.setC3POFinish(System.currentTimeMillis());
         });
 
         this.subscribeEvent(AttackEvent.class, (ev) ->{
@@ -47,6 +47,7 @@ public class C3POMicroservice extends MicroService {
                 Thread.sleep(ev.getTime());
             }
             catch (InterruptedException e){}
+            diary.addAttack();
             sendEvent(new FinishedAttackEvent());
             complete(ev, true);
         });
@@ -62,7 +63,7 @@ public class C3POMicroservice extends MicroService {
     }
 
     protected void close(){
-        //todo: write the time of terminate in the dairy here
+        diary.setC3POTerminate(System.currentTimeMillis());
     }
 
 
