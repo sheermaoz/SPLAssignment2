@@ -43,7 +43,6 @@ public class Main {
             LandoDuration = input.getLando();
             R2D2Duration = input.getR2D2();
             ewoksNum = input.getEwoks();
-            System.out.println(ewoksNum);
             
 
         }
