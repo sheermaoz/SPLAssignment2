@@ -37,13 +37,13 @@ public class Main {
 
         try
         {
-            FileReader reader = new FileReader(args[1]);
+            FileReader reader = new FileReader(args[0]);
             Input input = gson.fromJson(reader, Input.class);
             attacks = input.getAttacks();
             LandoDuration = input.getLando();
             R2D2Duration = input.getR2D2();
             ewoksNum = input.getEwoks();
-            System.out.println(attacks.length);
+            System.out.println(ewoksNum);
             
 
         }
@@ -80,66 +80,13 @@ public class Main {
         Gson outputGson  = new GsonBuilder().setPrettyPrinting().create();
         try
         {
-            FileWriter writer = new FileWriter(args[2]);
+            FileWriter writer = new FileWriter(args[1]);
             outputGson.toJson(diary, writer);
             writer.flush();
             writer.close();
 
         }
         catch (IOException e ){e.printStackTrace();}
-
-
-        //Ewoks ewoks = Ewoks.getInstance(ewoksNum);
-        
-
-
-
-        /*List<Integer> f = new ArrayList<Integer>();
-        f.add(5);
-        f.add(7);
-        f.add(3);
-        f.add(9);
-        f.add(1);
-        for(int i=0; i<f.size(); i++){
-            System.out.print(f.get(i)+" ");
-        }
-        int[] r = new int[f.size()];
-        for(int i=0; i<f.size(); i++){
-            r[i] = f.get(i);
-        }
-        Arrays.sort(r);
-        System.out.println();
-        for(int b : r){
-            System.out.print(b+" ");
-        }*/
-
-
-        /*int[] a = {2,1,6,3};
-        for(int b : a){
-            System.out.print(b+" ");
-        }
-        System.out.println();
-        Arrays.sort(a, 0, a.length);
-        for(int b : a){
-            System.out.print(b+" ");
-        }*/
-
-
-
-        //tests
-        /*Runnable r = new A();
-        Thread t1 = new Thread(r);
-        Thread t2 = new Thread(r);
-
-        t1.start();*/
-
-        /*long start=System.currentTimeMillis();
-        for(int i=0;i<=100000;i++){}
-        System.out.println(System.currentTimeMillis()-start);
-        */
-
-        /*Future<Boolean> future = new Future<Boolean>();
-        future.get(5, TimeUnit.SECONDS);*/
     }
 }
 
