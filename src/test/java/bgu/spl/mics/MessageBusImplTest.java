@@ -15,12 +15,13 @@ import bgu.spl.mics.application.services.*;
 
 public class MessageBusImplTest {
 
-    private MessageBusImpl bus = MessageBusImpl.getInstance();
+    private MessageBusImpl bus;
 
     
     @BeforeEach
     public void setUp()
     {
+        //changed from using contructor to using songelton method
         bus = MessageBusImpl.getInstance();
     }
     
